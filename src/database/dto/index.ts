@@ -9,3 +9,6 @@ export * from "./searchBook.dto";
 export * from "./borrowBook.dto";
 
 // category exports
+
+export * from "./createCategory.dto";
+export * from "./updateCategory.dto";
