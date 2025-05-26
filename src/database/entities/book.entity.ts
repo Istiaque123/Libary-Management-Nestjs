@@ -1,6 +1,6 @@
 import { BookStateus } from "src/common/types";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from ".";
+import { Category, User } from ".";
 
 @Entity()
 export class Book{
@@ -32,6 +32,12 @@ export class Book{
         scale: 2
     })
     price: number;
+
+    @ManyToMany(
+        () => Category, category => category.book
+    )
+    @JoinColumn()
+    category: Category;
 
     @Column({
         type: "enum",
