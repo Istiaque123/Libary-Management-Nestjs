@@ -14,10 +14,10 @@ import {
 import { Roles } from 'src/auth/decorators';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UserRole, type UpdateUserDto } from 'src/database/dto';
+import {  type UpdateUserDto } from 'src/database/dto';
 import { UserService } from './user.service';
 import type { User } from 'src/database/entities';
-import type { RequestWithUser } from 'src/common/types';
+import { UserRole, type RequestWithUser } from 'src/common/types';
 import { APIResponse } from 'src/common/dto';
 
 @Controller('users')

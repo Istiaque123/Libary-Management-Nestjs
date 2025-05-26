@@ -1,3 +1,11 @@
 export * from "./createUser.dto";
 export * from "./updateUser.dto";
-export * from "./userRole.enum"
+
+
+// Book exports
+export * from "./createBooks.dto";
+export * from "./updateBooks.dto";
+export * from "./searchBook.dto";
+export * from "./borrowBook.dto";
+
+// category exports

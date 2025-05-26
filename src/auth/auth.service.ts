@@ -5,7 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/database/entities';
 import type { Repository } from 'typeorm';
 import type { LoginDTO } from './dto';
-import { UserRole } from 'src/database/dto';
+import { UserRole } from 'src/common/types';
+
 
 
 

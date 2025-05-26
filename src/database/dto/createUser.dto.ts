@@ -1,4 +1,4 @@
-import type { UserRole } from "./userRole.enum";
+import type { UserRole } from "../../common/types/userRole.enum";
 
 export class CreateUserDto{
     username:string;

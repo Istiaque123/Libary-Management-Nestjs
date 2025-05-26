@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserRole } from "../dto";
 import { Book } from "./book.entity";
+import { UserRole } from "src/common/types";
 
 @Entity()
 export class User{
