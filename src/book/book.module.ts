@@ -4,6 +4,7 @@ import { BookController } from './book.controller';
 
 import { Module } from '@nestjs/common';
 import { Book, Category, User } from 'src/database/entities';
+import { BookService } from './book.service';
 
 @Module({
     imports: [
@@ -15,6 +16,8 @@ import { Book, Category, User } from 'src/database/entities';
     ],
     controllers: [
         BookController,],
-    providers: [],
+    providers: [
+        BookService
+    ],
 })
 export class BookModule { }
