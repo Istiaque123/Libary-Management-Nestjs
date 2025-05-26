@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "../dto";
+import { Book } from "./book.entity";
 
 @Entity()
 export class User{
@@ -27,4 +28,9 @@ export class User{
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @OneToMany(
+        () => Book, book => book.borrowedBy
+    )
+    borrowedBooks: Book[]
 }
