@@ -58,6 +58,11 @@ export class Book{
     })
     borrowedAt?: Date;
 
+    @Column({
+        nullable: true
+    })
+    returnDate?: Date;
+
     @CreateDateColumn()
     createdAt: Date;
 

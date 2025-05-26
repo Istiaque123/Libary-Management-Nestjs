@@ -19,8 +19,6 @@ import { Module } from '@nestjs/common';
   ],
   controllers: [],
   providers: [
-    BookService,
-
   ],
 })
 export class AppModule { }
