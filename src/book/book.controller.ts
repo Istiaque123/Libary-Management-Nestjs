@@ -75,7 +75,7 @@ export class BookController {
 
     async deleteBook(@Body() body: DeleteBookDto) {
         await this.bookService.deleteBook(body.bookId);
-        return APIResponse.success(null, "Booke deleted successfully")
+        return APIResponse.delte("Booke deleted successfully")
     }
 
 

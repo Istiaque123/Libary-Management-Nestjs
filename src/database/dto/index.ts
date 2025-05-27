@@ -13,3 +13,4 @@ export * from "./deleteBook.dto";
 
 export * from "./createCategory.dto";
 export * from "./updateCategory.dto";
+export * from "./category.params.dto";
