@@ -1,3 +1,4 @@
+import { BookscategoryController } from './bookscategory.controller';
 
 
 import { Module } from '@nestjs/common';
@@ -10,7 +11,9 @@ import { Category } from 'src/database/entities';
     imports: [
         TypeOrmModule.forFeature([Category])
     ],
-    controllers: [],
+    controllers: [
+        BookscategoryController,
+    ],
     providers: [BooksCategoryService],
 })
-export class BooksCategoryModule {}
+export class BooksCategoryModule { }
