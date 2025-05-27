@@ -33,7 +33,7 @@ export class APIResponse<T>{
     this.data = partial.data
    }
 
-   static success<T>(data:T, message = "Success", statusCode: HttpStatus.OK): APIResponse<T>{
+   static success<T>(data:T, message = "Success", statusCode = HttpStatus.OK): APIResponse<T>{
     return new APIResponse({
         data,
         message,

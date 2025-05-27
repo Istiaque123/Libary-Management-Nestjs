@@ -7,6 +7,7 @@ export * from "./createBooks.dto";
 export * from "./updateBooks.dto";
 export * from "./searchBook.dto";
 export * from "./borrowBook.dto";
+export * from "./deleteBook.dto";
 
 // category exports
 
