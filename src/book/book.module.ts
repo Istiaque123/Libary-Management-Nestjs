@@ -3,7 +3,7 @@ import { BookController } from './book.controller';
 
 
 import { Module } from '@nestjs/common';
-import { Book, Category, User } from 'src/database/entities';
+import { Book, BorrowRecord, Category, User } from 'src/database/entities';
 import { BookService } from './book.service';
 import { AuthModule } from 'src/auth';
 
@@ -13,6 +13,7 @@ import { AuthModule } from 'src/auth';
             Book,
             User,
             Category,
+            BorrowRecord
         ]),
         // AuthModule
     ],

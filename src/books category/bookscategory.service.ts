@@ -30,10 +30,12 @@ export class BooksCategoryService {
                 parent: null
             });
 
-            if (!checkRoot) {
-                throw new ConflictException("Problem occure create category");
+            try{
+                await this.categoryRepository.save(createRoot);
             }
-            this.categoryRepository.save(createRoot,);
+            catch(e){
+                throw new ConflictException('Failed to create root category');
+            }
         }
     }
 

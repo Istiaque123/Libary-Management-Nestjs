@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Book } from "./book.entity";
 import { UserRole } from "src/common/types";
+import { BorrowRecord } from "./borrow.entity";
 
 @Entity()
 export class User{
@@ -32,5 +33,12 @@ export class User{
     @OneToMany(
         () => Book, book => book.borrowedBy
     )
-    borrowedBooks: Book[]
+    borrowedBooks: Book[];
+
+    @OneToMany(
+        ()=> BorrowRecord, (borrowRecord) =>
+            borrowRecord.user
+    )
+    borrowRecords: BorrowRecord[]
+
 }

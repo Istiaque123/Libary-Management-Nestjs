@@ -1,6 +1,6 @@
 import { BookStateus } from "src/common/types";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Category, User } from ".";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BorrowRecord, Category, User } from ".";
 
 @Entity()
 export class Book{
@@ -27,7 +27,7 @@ export class Book{
     @Column({
         default: "1st"
     })
-    editon:string;
+    edition:string;
 
     @Column({
         type: "decimal",
@@ -66,6 +66,11 @@ export class Book{
         nullable: true
     })
     returnDate?: Date;
+
+    @OneToMany(()=>
+        BorrowRecord, (borrowRecord) => borrowRecord.book
+    )
+    borrowRecords: BorrowRecord[]
 
     @CreateDateColumn()
     createdAt: Date;

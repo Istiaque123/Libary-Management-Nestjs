@@ -71,8 +71,14 @@ export class BookController {
     @Roles(UserRole.ADMIN, UserRole.USER)
     @HttpCode(HttpStatus.OK)
     async returnBook(@Param('id') id: string) {
-        const book = await this.bookService.returnBook(+id);
-        return APIResponse.success(book, "Book return successfully");
+        const {book, fine} = await this.bookService.returnBook(+id);
+        return APIResponse.success({
+            book,
+            fine
+        }, fine > 0 ? 
+        `Book returned successfully with a fine of $${fine}` :
+         'Book returned successfully',
+    );
     }
 
     @Post('delete')
