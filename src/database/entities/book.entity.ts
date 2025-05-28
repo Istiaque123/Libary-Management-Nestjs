@@ -1,5 +1,5 @@
 import { BookStateus } from "src/common/types";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Category, User } from ".";
 
 @Entity()
@@ -19,11 +19,14 @@ export class Book{
     author: string;
 
     @Column({
-        unique: true
+        unique: true,
+
     })
     serialNumber: string;
 
-    @Column()
+    @Column({
+        default: "1st"
+    })
     editon:string;
 
     @Column({
@@ -33,10 +36,10 @@ export class Book{
     })
     price: number;
 
-    @ManyToMany(
+    @ManyToOne(
         () => Category, category => category.book
     )
-    @JoinColumn()
+    // @JoinColumn()
     category: Category;
 
     @Column({
@@ -47,10 +50,11 @@ export class Book{
     status: BookStateus;
 
 
-    @ManyToMany( 
-        ()=> User, user => user.borrowedBooks
+    @ManyToOne( 
+        ()=> User, user => user.borrowedBooks,
+        { nullable: true }
     )
-    @JoinColumn()
+    // @JoinColumn()
     borrowedBy?: User;
 
     @Column({

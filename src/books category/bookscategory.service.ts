@@ -1,6 +1,7 @@
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { log } from 'console';
 import type { CreateCategoryDto, UpdateCategoryDto } from 'src/database/dto';
 import { Category } from 'src/database/entities';
 import type { Repository, TreeRepository } from 'typeorm';
@@ -11,10 +12,33 @@ export class BooksCategoryService {
         @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
         @InjectRepository(Category) private readonly treeCategoryRepository: TreeRepository<Category>,
     ){
+        this.initilizeRoot()
+    }
+
+
+    private async initilizeRoot(): Promise<void>{
+        const checkRoot: Category | null = await this.categoryRepository.findOne({
+            where :{
+                name : "Root"
+            }
+        });
+
+        if (!checkRoot) {
+            const createRoot: Category =  this.categoryRepository.create({
+                name : "Root",
+                description: "Main Root for Category",
+                parent: null
+            });
+
+            if (!checkRoot) {
+                throw new ConflictException("Problem occure create category");
+            }
+            this.categoryRepository.save(createRoot,);
+        }
     }
 
     async createCategory(createCategoryDto: CreateCategoryDto): Promise<Category>{
-        let parent : any;
+        let parent : Category | null = null;
 
         if (createCategoryDto.parentId) {
             parent = await this.categoryRepository.findOne({
@@ -28,10 +52,10 @@ export class BooksCategoryService {
             }
         }
 
-        const category = this.categoryRepository.create({
+        const category: Category = this.categoryRepository.create({
             name: createCategoryDto.name,
             description: createCategoryDto.description,
-            parent: parent
+            parent
         });
         return this.categoryRepository.save(category);
     }
@@ -77,6 +101,7 @@ export class BooksCategoryService {
 
         return category;
     }
+
 
 
     async getCategoryTree(): Promise<Category[]> {

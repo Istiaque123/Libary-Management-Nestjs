@@ -6,18 +6,21 @@ import { Roles } from 'src/auth/decorators';
 import { UserRole } from 'src/common/types';
 import type { BorrowBookDto, CreateBookDto, DeleteBookDto, SearchBookDto, UpdateBookDto } from 'src/database/dto';
 import { APIResponse } from 'src/common/dto';
+import { log } from 'console';
 
 @Controller("books")
 @UseGuards(JwtGuard, RolesGuard)
 export class BookController {
-    constructor (@Inject(BookService) private readonly bookService: BookService) { }
+    constructor (@Inject(BookService) private readonly bookService: BookService) {
+     }
 
 
     @Post('create')
     @Roles(UserRole.ADMIN)
     @HttpCode(HttpStatus.CREATED)
     async creatBook(@Body() body: CreateBookDto) {
-        const book = await this.creatBook(body);
+        log("hit book");
+        const book = await this.bookService.createBook(body);
         return APIResponse.created(body, "Book created successfully");
     }
 
@@ -25,6 +28,7 @@ export class BookController {
     @Roles(UserRole.ADMIN, UserRole.USER)
     @HttpCode(HttpStatus.OK)
     async findAll() {
+        log("hit find all");
         const books = await this.bookService.getAllBooks();
         return APIResponse.success(books, "Books retrieved successfully", HttpStatus.FOUND);
     }
@@ -33,8 +37,10 @@ export class BookController {
     @Roles(UserRole.ADMIN, UserRole.USER)
     @HttpCode(HttpStatus.FOUND)
     async searchBook(@Query() searchBookQuery: SearchBookDto) {
+
         const book = await this.bookService.searchBooks(searchBookQuery);
-        APIResponse.success(book, "Book found");
+
+        return APIResponse.success(book, "Book found");
     }
 
     @Get('book/:id')
@@ -61,7 +67,7 @@ export class BookController {
         return APIResponse.success(book, "Book borrowed successfully");
     }
 
-    @Post('return/:id')
+    @Get('return/:id')
     @Roles(UserRole.ADMIN, UserRole.USER)
     @HttpCode(HttpStatus.OK)
     async returnBook(@Param('id') id: string) {

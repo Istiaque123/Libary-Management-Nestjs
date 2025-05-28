@@ -14,7 +14,7 @@ import { AuthModule } from 'src/auth';
             User,
             Category,
         ]),
-        AuthModule
+        // AuthModule
     ],
     controllers: [
         BookController,],

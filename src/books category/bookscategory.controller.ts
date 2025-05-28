@@ -4,7 +4,7 @@ import { RolesGuard,  } from 'src/auth/guards/roles.guard';
 import { BooksCategoryService } from '.';
 import { Roles } from 'src/auth/decorators';
 import { UserRole } from 'src/common/types';
-import type { CategoryParemsDto, CreateCategoryDto, UpdateBookDto } from 'src/database/dto';
+import type { CategoryParemsDto, CreateCategoryDto, UpdateBookDto, UpdateCategoryDto } from 'src/database/dto';
 import { APIResponse } from 'src/common/dto';
 import type { Category } from 'src/database/entities';
 
@@ -48,7 +48,7 @@ export class BookscategoryController {
     @Post("update")
     @Roles(UserRole.ADMIN)
     @HttpCode(HttpStatus.ACCEPTED)
-    async updateCategory(@Query() query: CategoryParemsDto, @Body() body: UpdateBookDto){
+    async updateCategory(@Query() query: CategoryParemsDto, @Body() body: UpdateCategoryDto){
         const category = await this.bookCategoryService.updateCategory(query.categoryId, body);
         return APIResponse.update(category, "Category update successfully");
     }
