@@ -39,6 +39,11 @@ export class User{
         ()=> BorrowRecord, (borrowRecord) =>
             borrowRecord.user
     )
-    borrowRecords: BorrowRecord[]
+    borrowRecords: BorrowRecord[];
+
+    @Column({
+        nullable: true
+    })
+    profilePicture?: string;
 
 }
