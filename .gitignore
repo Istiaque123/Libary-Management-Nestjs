@@ -49,6 +49,8 @@ lerna-debug.log*
 # uplodas
 **/uploads/
 
+.gitignore
+
 
 # Runtime data
 pids
