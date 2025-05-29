@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const uploadDir = join(__dirname, '..', 'Uploads');
   console.log('Serving static files from:', uploadDir); // Debug path
-  app.useStaticAssets(uploadDir, { prefix: '/Uploads/' });
+  app.useStaticAssets(uploadDir, { prefix: '/uploads/' });
   // app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/uploads' });
 
 

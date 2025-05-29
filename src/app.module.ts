@@ -19,14 +19,14 @@ import { multerConfig } from './common/config';
     DatabaseModule,
 
 
-    // MulterModule.registerAsync({
-    //   // useClass: MulterConfigService
+    MulterModule.registerAsync({
+      useClass: MulterConfigService
 
-    // })
-
-     MulterModule.registerAsync({
-      useFactory: () => multerConfig,
     }),
+
+    //  MulterModule.registerAsync({
+    //   useFactory: () => multerConfig,
+    // }),
 
   ],
   controllers: [],

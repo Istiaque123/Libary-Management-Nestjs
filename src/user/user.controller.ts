@@ -16,7 +16,8 @@ import {
     FileTypeValidator,
     UploadedFile,
     HttpException,
-    BadRequestException
+    BadRequestException,
+    ParseIntPipe
 } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -30,6 +31,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { log } from 'console';
 import { multerConfig } from 'src/common/config';
 import { writeFile } from 'fs/promises';
+import { writeFileSync } from 'fs';
+import { use } from 'passport';
+import type { UserProfileDto } from './dto';
 
 @Controller('users')
 @UseGuards(JwtGuard, RolesGuard)
@@ -99,95 +103,33 @@ export class UserController {
         return APIResponse.update(user, "Info update successful");
     }
 
+    @Post('upload-profile-picture/:id')
+    @UseInterceptors(FileInterceptor('profilePicture'))
+    @HttpCode(HttpStatus.ACCEPTED)
+    async uploadProfilePicture(
+        @Param('id', ParseIntPipe) id: number,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+                    // new FileTypeValidator({ fileType: /^image\/(jpeg|jpg|png)$/ }),
+                ],
+                errorHttpStatusCode: HttpStatus.BAD_REQUEST,
+            }),)
+        file: Express.Multer.File): Promise<APIResponse<{
+            updateUser: UserProfileDto;
+            profile: string;
+        }>> {
 
-    // @Post('upload-profile-picture/:id')
-    // @HttpCode(HttpStatus.ACCEPTED)
-    // @Roles(UserRole.ADMIN, UserRole.USER)
-    // @UseInterceptors(FileInterceptor('profilePicture', multerConfig))
-    // async uploadProfilePicture(
-    //     @Param("id") id: number,
-
-    //     @UploadedFile(
-    //         new ParseFilePipe({
-    //     validators: [
-    //       new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
-    //       new FileTypeValidator({ fileType: /^(image\/jpeg|image\/jpg|image\/png)$/ }),
-    //     ],
-    //             errorHttpStatusCode: HttpStatus.BAD_REQUEST,
-    //         }),) 
-    //         file: Express.Multer.File
-    // ){
-    //     const user = await this.userService.uploadProfilePicture(+id, file);
-
-    //     log(file);
-    //     log(user.profilePicture);
-    //     return APIResponse.success({
-    //         user: user,
-    //         profilePicture: user.profilePicture
-    //     });
-    // }
+        const { updateUser, profileString } = await this.userService.uploadProfilePicture(id, file);
 
 
-@Post('upload-profile-picture')
-@UseInterceptors(FileInterceptor('profilePicture', multerConfig))
-async uploadProfilePicture(
-  @Req() req: RequestWithUser,
-  @UploadedFile(
-    new ParseFilePipe({
-      validators: [
-        new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+        return APIResponse.update({
+            updateUser,
+            profile: profileString,
+        }, "Profile pic uplode successfully")
 
-        // Fixed validator syntax
-        // new FileTypeValidator({
-        //   fileType: /^image\/(jpe?g|png)$/i
-        // })
-      ],
-      exceptionFactory: (errors) => new BadRequestException({
-        message: 'File validation failed',
-        errors
-      })
-    }),
-  )
-  file: Express.Multer.File
-) {
-  // Debug log to verify file details
-  log('Uploaded file:', {
-    originalname: file.originalname,
-    mimetype: file.mimetype,
-    size: file.size,
-    path: file.path
-  });
-
-  // Fixed service method name to match your actual service
-//   const user = await this.userService.uploadProfilePicture(
-//     req.user.id,
-//     file.filename // or file.path depending on your needs
-//   );
-
-//   return {
-//     success: true,
-//     message: 'Profile picture uploaded successfully',
-//     data: {
-//       profilePictureUrl: `/uploads/profile-pictures/${file.filename}`,
-//       userId: user.id
-//     }
-//   };
-}
-
-    @Post('upload')
-    @UseInterceptors(FileInterceptor('profilePicture')) // field name must match frontend form
-    async uploadFile(@UploadedFile() file: Express.Multer.File) {
-        
-        const uploadPath = `./uploads/${file.originalname}`;
-        await writeFile(uploadPath, file.buffer);
-
-        log(uploadPath);
-
-        return {
-            originalname: file.originalname,
-            filename: file.filename,
-            path: uploadPath,
-        };
     }
+
 
 }
