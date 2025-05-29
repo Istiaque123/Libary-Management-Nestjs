@@ -47,7 +47,7 @@ lerna-debug.log*
 .tmp
 
 # uplodas
-/uplodas
+*/uplodas
 
 # Runtime data
 pids
